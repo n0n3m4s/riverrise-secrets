@@ -33,7 +33,16 @@ git push -u origin main
 
 Argo CD: додай репозиторій `git@github.com:n0n3m4s/riverrise-secrets.git` (Credentials) і синкни Application `sealed-secrets-key`.
 
-## Робота з app-секретами (gitops k8s)
+## GHCR pull secret
+
+```bash
+# GitHub → Settings → Developer settings → Personal access tokens
+# scopes: read:packages (+ authorize SSO if org)
+./make-ghcr-pull.sh <github-user> <PAT>
+```
+
+Створює SealedSecret `ghcr-pull` у `k8s/environments/prod/secrets/` (NS `default`).
+Сервіси вже мають `imagePullSecrets: [{ name: ghcr-pull }]`.
 
 ```bash
 ./decrypt.sh prod all
