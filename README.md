@@ -5,40 +5,33 @@ Argo CD Application `sealed-secrets-key` дивиться сюди:
 
 ```yaml
 # k8s/apps/prod/infra/application-sealed-secrets-key.yaml
-repoURL: https://github.com/<ORG>/riverrise-secrets.git
+repoURL: git@github.com:n0n3m4s/riverrise-secrets.git
 path: clusters/prod/sealed-secrets
 ```
+
+Remote (SSH): `git@github.com:n0n3m4s/riverrise-secrets.git`
 
 ## Структура
 
 ```text
 riverrise-secrets/          # цей репо (локально: sealed-secrets-keys/)
 ├── clusters/
-│   ├── prod/sealed-secrets/sealed-secrets-key.yaml   ← синкає Argo
-│   └── staging/sealed-secrets/
+│   └── prod/sealed-secrets/sealed-secrets-key.yaml   ← синкає Argo
 ├── examples/prod/          # шаблони Secret
-├── .local/<env>/           # НЕ в git — tls.key, plain/
+├── .local/prod/            # НЕ в git — tls.key, plain/
 ├── encrypt.sh / decrypt.sh / generate.sh
 └── README.md
 ```
 
-## Перший пуш
+## Push
 
 ```bash
-cd sealed-secrets-keys   # або clone після rename
-git init
-git add .
-git status   # має бути clusters/prod/sealed-secrets/sealed-secrets-key.yaml
-git commit -m "Add prod sealed-secrets key for Argo CD"
-gh repo create riverrise-secrets --private --source=. --remote=origin --push
-# або:
-# git remote add origin git@github.com:ORG/riverrise-secrets.git
-# git branch -M main
-# git push -u origin main
+cd sealed-secrets-keys
+git remote add origin git@github.com:n0n3m4s/riverrise-secrets.git   # якщо ще немає
+git push -u origin main
 ```
 
-Після пушу підстав реальний `repoURL` у `k8s/apps/prod/infra/application-sealed-secrets-key.yaml`
-і додай репо в Argo CD (Settings → Repositories) з read-доступом.
+Argo CD: додай репозиторій `git@github.com:n0n3m4s/riverrise-secrets.git` (Credentials) і синкни Application `sealed-secrets-key`.
 
 ## Робота з app-секретами (gitops k8s)
 
