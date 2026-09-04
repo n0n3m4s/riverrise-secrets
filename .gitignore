@@ -1,0 +1,22 @@
+# Private secrets repo for riverrise (Argo CD → sealed-secrets-key).
+# DO NOT make this repository public.
+
+*
+!.gitignore
+!README.md
+!generate.sh
+!encrypt.sh
+!decrypt.sh
+!examples/
+!examples/**
+!clusters/
+!clusters/**
+!.local/
+!.local/**/.gitkeep
+
+# Never commit working plaintext or loose key files
+.local/**/plain/
+.local/**/tls.key
+.local/**/tls.crt
+.local/**/credentials.txt
+**/.DS_Store
